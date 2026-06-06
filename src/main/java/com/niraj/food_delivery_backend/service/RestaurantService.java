@@ -4,10 +4,12 @@ package com.niraj.food_delivery_backend.service;
 import com.niraj.food_delivery_backend.dto.RestaurantRequestDto;
 import com.niraj.food_delivery_backend.dto.RestaurantResponseDto;
 import com.niraj.food_delivery_backend.entity.Restaurant;
+import com.niraj.food_delivery_backend.exception.RestaurantNotFoundException;
 import com.niraj.food_delivery_backend.repository.RestaurantRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RestaurantService {
@@ -34,6 +36,36 @@ public class RestaurantService {
                 savedRestaurant.getName(),
                 savedRestaurant.getAddress()
         );
+    }
+
+    public List<RestaurantResponseDto> getAllRestaurants(){
+        List<Restaurant> restaurants = restaurantRepository.findAll();
+
+        return  restaurants.stream()
+                .map(restaurant -> new RestaurantResponseDto(
+                        restaurant.getId(),
+                        restaurant.getName(),
+                        restaurant.getAddress()
+                )).toList();
+        //map is used to convert restaurant object in restaurant response DTO objects.
+
+    }
+
+    public RestaurantResponseDto getRestaurant(Long id)
+    {
+        Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(
+                () -> new RestaurantNotFoundException(
+                        "Restaurant Not Found with ID : "+id
+                )
+        );
+        // optional is used because findById resource may not be present
+        //so to encounter NPE we will use Optional methods like orElse, orElseThrow, ifPresent.
+        return new RestaurantResponseDto(
+                restaurant.getId(),
+                restaurant.getName(),
+                restaurant.getAddress()
+        );
+
     }
 
 }
