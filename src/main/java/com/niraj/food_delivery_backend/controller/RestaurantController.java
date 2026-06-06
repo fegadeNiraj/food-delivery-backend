@@ -5,6 +5,7 @@ import com.niraj.food_delivery_backend.dto.RestaurantRequestDto;
 import com.niraj.food_delivery_backend.dto.RestaurantResponseDto;
 import com.niraj.food_delivery_backend.service.RestaurantService;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,22 +20,33 @@ public class RestaurantController {
         this.restaurantService = restaurantService;
     }
 
-    @GetMapping("/GetAllRestaurants")
+    @GetMapping()
     public List<RestaurantResponseDto> getRestaurants() {
         return restaurantService.getAllRestaurants();
     }
 
 
-    @PostMapping("/AddRestaurant")
+    @PostMapping()
     public RestaurantResponseDto createRestaurant(@Valid @RequestBody RestaurantRequestDto requestDto) {
         return restaurantService.createRestaurant(requestDto);
     }
 
-    @GetMapping("/GetRestaurant/{id}")
+    @GetMapping("/{id}")
     public RestaurantResponseDto getRestaurant(@PathVariable Long id)
     {
         return restaurantService.getRestaurant(id);
     }
 
+    @PutMapping("/{id}")
+    public RestaurantResponseDto updateRestaurant(@Valid @RequestBody RestaurantRequestDto requestDto,@PathVariable Long id)
+    {
+        return restaurantService.updateRestaurant(requestDto,id);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteRestaurant(@PathVariable Long id)
+    {
+        return restaurantService.deleteRestaurant(id);
+    }
 
 }

@@ -6,6 +6,9 @@ import com.niraj.food_delivery_backend.dto.RestaurantResponseDto;
 import com.niraj.food_delivery_backend.entity.Restaurant;
 import com.niraj.food_delivery_backend.exception.RestaurantNotFoundException;
 import com.niraj.food_delivery_backend.repository.RestaurantRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -68,4 +71,38 @@ public class RestaurantService {
 
     }
 
+    public RestaurantResponseDto updateRestaurant(RestaurantRequestDto requestDto, Long id)
+    {
+
+
+        Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(
+                ()-> new RestaurantNotFoundException(
+                        "Restaurant Not Found with ID : " +id
+                )
+        );
+
+        restaurant.setName(requestDto.getName());
+        restaurant.setAddress(requestDto.getAddress());
+        restaurant.setPhoneNumber(requestDto.getPhoneNumber());
+
+        Restaurant updatedRestaurant = restaurantRepository.save(restaurant);
+
+        return new RestaurantResponseDto(
+                updatedRestaurant.getId(),
+                updatedRestaurant.getName(),
+                updatedRestaurant.getAddress()
+        );
+
+    }
+
+    public ResponseEntity<Void> deleteRestaurant(Long id)
+    {
+        Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(
+                ()-> new RestaurantNotFoundException(
+                        "Restaurant Not Found with ID : "+id
+                )
+        );
+        restaurantRepository.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
