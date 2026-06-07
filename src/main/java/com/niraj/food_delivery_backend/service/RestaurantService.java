@@ -6,6 +6,7 @@ import com.niraj.food_delivery_backend.dto.RestaurantResponseDto;
 import com.niraj.food_delivery_backend.entity.Restaurant;
 import com.niraj.food_delivery_backend.exception.RestaurantNotFoundException;
 import com.niraj.food_delivery_backend.repository.RestaurantRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;

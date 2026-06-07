@@ -1,31 +1,26 @@
 package com.niraj.food_delivery_backend.entity;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Entity
-@Table(name = "restaurants")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class Restaurant {
+@NoArgsConstructor
+public class MenuItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
-    private String address;
-    private String phoneNumber;
+    private Double price;
 
-    @OneToMany(mappedBy = "restaurant")
-    private List<MenuItem> menuItems;
-
+    @ManyToOne
+    private Restaurant restaurant;
 
 }
