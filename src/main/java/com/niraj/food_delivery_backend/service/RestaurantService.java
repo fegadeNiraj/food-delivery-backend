@@ -8,12 +8,10 @@ import com.niraj.food_delivery_backend.exception.RestaurantNotFoundException;
 import com.niraj.food_delivery_backend.repository.RestaurantRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RestaurantService {
@@ -106,4 +104,27 @@ public class RestaurantService {
         restaurantRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+//    public Integer testLazyLoading(Long restaurantId)
+//    {
+//        Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(
+//                ()->new RestaurantNotFoundException("No Restaurant found with ID : "+restaurantId)
+//        );
+//
+//        System.out.println(restaurant.getName());
+//        return restaurant.getMenuItems().size();
+//
+//    }
+
+
+//    @Transactional
+//    public void testPlusOne()
+//    {
+//        List<Restaurant> restaurants = restaurantRepository.findAllWithMenuItems();
+//
+//        for(Restaurant restaurant : restaurants)
+//        {
+//            System.out.println(restaurant.getMenuItems().size());
+//        }
+//    }
 }

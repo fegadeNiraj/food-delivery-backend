@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.jpa.repository.EntityGraph;
 
 import java.util.List;
 
@@ -24,7 +25,11 @@ public class Restaurant {
     private String address;
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "restaurant")
+    @OneToMany(mappedBy = "restaurant",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+            )
     private List<MenuItem> menuItems;
 
 

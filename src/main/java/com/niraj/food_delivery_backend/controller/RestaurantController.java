@@ -49,4 +49,17 @@ public class RestaurantController {
         return restaurantService.deleteRestaurant(id);
     }
 
+
+//    @GetMapping("/lazy/{restaurantId}")
+//    public Integer testLazy(@PathVariable Long restaurantId)
+//    {
+//        return restaurantService.testLazyLoading(restaurantId);
+//    }
+
+//    @GetMapping("/testPlusOne")
+//    public void testPlusOne()
+//    {
+//        restaurantService.testPlusOne();
+//    }
+
 }

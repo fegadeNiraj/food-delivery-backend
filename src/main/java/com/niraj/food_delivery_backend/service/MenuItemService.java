@@ -4,6 +4,7 @@ import com.niraj.food_delivery_backend.dto.MenuItemRequestDto;
 import com.niraj.food_delivery_backend.dto.MenuItemResponseDto;
 import com.niraj.food_delivery_backend.entity.MenuItem;
 import com.niraj.food_delivery_backend.entity.Restaurant;
+import com.niraj.food_delivery_backend.exception.MenuItemAlreadyExistsException;
 import com.niraj.food_delivery_backend.exception.RestaurantNotFoundException;
 import com.niraj.food_delivery_backend.repository.MenuItemRepository;
 import com.niraj.food_delivery_backend.repository.RestaurantRepository;
@@ -30,6 +31,11 @@ public class MenuItemService {
         );
 
         MenuItem menuItem = new MenuItem();
+        if(menuItemRepository.existsByNameAndRestaurant(menuItemRequestDto.getName(),restaurant)){
+           throw new MenuItemAlreadyExistsException(
+                   "Menu Item Already Exists with name : "+menuItemRequestDto.getName()+" in restaurant : "+restaurant.getName()
+           );
+        }
         menuItem.setName(menuItemRequestDto.getName());
         menuItem.setPrice(menuItemRequestDto.getPrice());
         menuItem.setRestaurant(restaurant);

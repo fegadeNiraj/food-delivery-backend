@@ -23,4 +23,16 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponseDTO, HttpStatus.NOT_FOUND);
 
     }
+
+    @ExceptionHandler(MenuItemAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponseDTO> handleMenuItemAlreadyExistsException(MenuItemAlreadyExistsException exception)
+    {
+        ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO(
+                "Menu Item Already Exists",
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponseDTO,HttpStatus.CONFLICT);
+    }
+
 }
