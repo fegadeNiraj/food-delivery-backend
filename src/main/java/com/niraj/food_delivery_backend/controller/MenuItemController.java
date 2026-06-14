@@ -32,4 +32,10 @@ public class MenuItemController {
         return menuItemService.getMenuItems(restaurantID);
     }
 
+    @PutMapping("/menu-items/{menuItemId}")
+    public MenuItemResponseDto updateMenuItem(@Valid @RequestBody MenuItemRequestDto menuItemRequestDto, @PathVariable Long menuItemId)
+    {
+        return menuItemService.updateMenuItem(menuItemRequestDto, menuItemId);
+    }
+
 }

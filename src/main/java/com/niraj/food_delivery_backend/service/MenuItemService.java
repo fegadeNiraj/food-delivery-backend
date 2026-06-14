@@ -5,9 +5,11 @@ import com.niraj.food_delivery_backend.dto.MenuItemResponseDto;
 import com.niraj.food_delivery_backend.entity.MenuItem;
 import com.niraj.food_delivery_backend.entity.Restaurant;
 import com.niraj.food_delivery_backend.exception.MenuItemAlreadyExistsException;
+import com.niraj.food_delivery_backend.exception.MenuItemNotFoundException;
 import com.niraj.food_delivery_backend.exception.RestaurantNotFoundException;
 import com.niraj.food_delivery_backend.repository.MenuItemRepository;
 import com.niraj.food_delivery_backend.repository.RestaurantRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -69,6 +71,36 @@ public class MenuItemService {
                         menuItem.getPrice(),
                         menuItem.getRestaurant().getId()
                 )).toList();
+
+    }
+
+    @Transactional
+    public MenuItemResponseDto updateMenuItem(MenuItemRequestDto menuItemRequestDto, Long menuItemId)
+    {
+
+        MenuItem menuItem = menuItemRepository.findById(menuItemId).orElseThrow(
+                ()->new MenuItemNotFoundException(
+                        "Menu Item Not Found with ID : "+menuItemId
+                )
+        );
+
+        if(menuItemRepository.existsByNameAndRestaurantAndIdNot(menuItemRequestDto.getName(), menuItem.getRestaurant(), menuItemId))
+        {
+            throw new MenuItemAlreadyExistsException(
+                    "Menu Item Already exists with name : "+menuItemRequestDto.getName()+" in restaurant : "+menuItem.getRestaurant().getName()
+            );
+
+        }
+
+        menuItem.setName(menuItemRequestDto.getName());
+        menuItem.setPrice(menuItemRequestDto.getPrice());
+
+        return new MenuItemResponseDto(
+                menuItem.getId(),
+                menuItem.getName(),
+                menuItem.getPrice(),
+                menuItem.getRestaurant().getId()
+        );
 
     }
 
