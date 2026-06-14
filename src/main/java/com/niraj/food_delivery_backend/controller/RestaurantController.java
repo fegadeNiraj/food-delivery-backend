@@ -1,8 +1,10 @@
 package com.niraj.food_delivery_backend.controller;
 
 
+import com.niraj.food_delivery_backend.dto.MenuItemResponseDto;
 import com.niraj.food_delivery_backend.dto.RestaurantRequestDto;
 import com.niraj.food_delivery_backend.dto.RestaurantResponseDto;
+import com.niraj.food_delivery_backend.service.MenuItemService;
 import com.niraj.food_delivery_backend.service.RestaurantService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +17,11 @@ import java.util.List;
 public class RestaurantController {
 
     private final RestaurantService restaurantService;
+    private final MenuItemService menuItemService;
 
-    public RestaurantController(RestaurantService restaurantService) {
+    public RestaurantController(RestaurantService restaurantService,MenuItemService menuItemService) {
         this.restaurantService = restaurantService;
+        this.menuItemService = menuItemService;
     }
 
     @GetMapping()
@@ -46,8 +50,18 @@ public class RestaurantController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRestaurant(@PathVariable Long id)
     {
-        return restaurantService.deleteRestaurant(id);
+        restaurantService.deleteRestaurant(id);
+        return ResponseEntity.noContent().build();
     }
+
+    //get Menu items
+    @GetMapping("/{restaurantID}/menu-items")
+    public List<MenuItemResponseDto> getMenuItems(@PathVariable Long restaurantID)
+    {
+       return menuItemService.getMenuItems(restaurantID);
+    }
+
+
 
 
 //    @GetMapping("/lazy/{restaurantId}")

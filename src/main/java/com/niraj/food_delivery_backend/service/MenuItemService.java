@@ -10,6 +10,8 @@ import com.niraj.food_delivery_backend.repository.MenuItemRepository;
 import com.niraj.food_delivery_backend.repository.RestaurantRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MenuItemService {
 
@@ -48,6 +50,26 @@ public class MenuItemService {
                 savedMenuItem.getPrice(),
                 savedMenuItem.getRestaurant().getId()
         );
+    }
+
+    public List<MenuItemResponseDto> getMenuItems(Long restaurantId)
+    {
+        restaurantRepository.findById(restaurantId).orElseThrow(
+                ()->new RestaurantNotFoundException(
+                        "Restaurant Not Found with ID : "+restaurantId
+                )
+        );
+
+        List<MenuItem> menuItems= menuItemRepository.findByRestaurantId(restaurantId);
+
+        return menuItems.stream()
+                .map(menuItem -> new MenuItemResponseDto(
+                        menuItem.getId(),
+                        menuItem.getName(),
+                        menuItem.getPrice(),
+                        menuItem.getRestaurant().getId()
+                )).toList();
+
     }
 
 }

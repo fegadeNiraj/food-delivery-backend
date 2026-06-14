@@ -70,6 +70,7 @@ public class RestaurantService {
 
     }
 
+    @Transactional
     public RestaurantResponseDto updateRestaurant(RestaurantRequestDto requestDto, Long id)
     {
 
@@ -84,25 +85,22 @@ public class RestaurantService {
         restaurant.setAddress(requestDto.getAddress());
         restaurant.setPhoneNumber(requestDto.getPhoneNumber());
 
-        Restaurant updatedRestaurant = restaurantRepository.save(restaurant);
-
         return new RestaurantResponseDto(
-                updatedRestaurant.getId(),
-                updatedRestaurant.getName(),
-                updatedRestaurant.getAddress()
+                restaurant.getId(),
+                restaurant.getName(),
+                restaurant.getAddress()
         );
 
     }
 
-    public ResponseEntity<Void> deleteRestaurant(Long id)
+    public void deleteRestaurant(Long id)
     {
-        Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(
+        restaurantRepository.findById(id).orElseThrow(
                 ()-> new RestaurantNotFoundException(
                         "Restaurant Not Found with ID : "+id
                 )
         );
         restaurantRepository.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 //    public Integer testLazyLoading(Long restaurantId)
