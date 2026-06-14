@@ -54,15 +54,6 @@ public class RestaurantController {
         return ResponseEntity.noContent().build();
     }
 
-    //get Menu items
-    @GetMapping("/{restaurantID}/menu-items")
-    public List<MenuItemResponseDto> getMenuItems(@PathVariable Long restaurantID)
-    {
-       return menuItemService.getMenuItems(restaurantID);
-    }
-
-
-
 
 //    @GetMapping("/lazy/{restaurantId}")
 //    public Integer testLazy(@PathVariable Long restaurantId)
