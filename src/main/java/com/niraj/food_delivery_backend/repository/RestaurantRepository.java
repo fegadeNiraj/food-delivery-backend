@@ -17,4 +17,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
             """)
 //    @EntityGraph(attributePaths = "menuItems")
     List<Restaurant> findAllWithMenuItems();
+
+
+    List<Restaurant> findByNameContainingIgnoreCase(String keyword);
 }

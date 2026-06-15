@@ -103,6 +103,21 @@ public class RestaurantService {
         restaurantRepository.deleteById(id);
     }
 
+    public List<RestaurantResponseDto> searchRestaurants(String keyword)
+    {
+        List<Restaurant> restaurants = restaurantRepository.findByNameContainingIgnoreCase(keyword);
+
+        return restaurants.stream()
+                .map(restaurant -> new RestaurantResponseDto(
+                        restaurant.getId(),
+                        restaurant.getName(),
+                        restaurant.getAddress()
+                )).toList();
+
+    }
+
+
+
 //    public Integer testLazyLoading(Long restaurantId)
 //    {
 //        Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(

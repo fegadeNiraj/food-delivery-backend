@@ -102,6 +102,17 @@ public class MenuItemService {
                 menuItem.getRestaurant().getId()
         );
 
+
+    }
+
+    public void deleteMenuItem(Long menuItemId)
+    {
+        menuItemRepository.findById(menuItemId).orElseThrow(
+                ()->new MenuItemNotFoundException(
+                        "Menu Item Not found with ID : "+menuItemId
+                )
+        );
+        menuItemRepository.deleteById(menuItemId);
     }
 
 }

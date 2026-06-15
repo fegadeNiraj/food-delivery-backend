@@ -54,6 +54,12 @@ public class RestaurantController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/search")
+    public List<RestaurantResponseDto> searchRestaurantWithKeyword(@RequestParam String keyword)
+    {
+        return restaurantService.searchRestaurants(keyword);
+    }
+
 
 //    @GetMapping("/lazy/{restaurantId}")
 //    public Integer testLazy(@PathVariable Long restaurantId)
