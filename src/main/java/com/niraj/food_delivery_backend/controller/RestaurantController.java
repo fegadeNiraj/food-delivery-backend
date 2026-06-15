@@ -2,6 +2,7 @@ package com.niraj.food_delivery_backend.controller;
 
 
 import com.niraj.food_delivery_backend.dto.MenuItemResponseDto;
+import com.niraj.food_delivery_backend.dto.RestaurantPageResponseDto;
 import com.niraj.food_delivery_backend.dto.RestaurantRequestDto;
 import com.niraj.food_delivery_backend.dto.RestaurantResponseDto;
 import com.niraj.food_delivery_backend.service.MenuItemService;
@@ -28,6 +29,13 @@ public class RestaurantController {
     public List<RestaurantResponseDto> getRestaurants() {
         return restaurantService.getAllRestaurants();
     }
+
+    @GetMapping("/all")
+    public RestaurantPageResponseDto getRestaurantsPagination(@RequestParam int page, @RequestParam int size)
+    {
+        return restaurantService.getAllRestaurants(page,size);
+    }
+
 
 
     @PostMapping()

@@ -1,14 +1,16 @@
 package com.niraj.food_delivery_backend.service;
 
 
+import com.niraj.food_delivery_backend.dto.RestaurantPageResponseDto;
 import com.niraj.food_delivery_backend.dto.RestaurantRequestDto;
 import com.niraj.food_delivery_backend.dto.RestaurantResponseDto;
 import com.niraj.food_delivery_backend.entity.Restaurant;
 import com.niraj.food_delivery_backend.exception.RestaurantNotFoundException;
 import com.niraj.food_delivery_backend.repository.RestaurantRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -114,6 +116,29 @@ public class RestaurantService {
                         restaurant.getAddress()
                 )).toList();
 
+    }
+
+    public RestaurantPageResponseDto getAllRestaurants(int page, int size)
+    {
+        Pageable pageable = PageRequest.of(page,size);
+        Page<Restaurant> restaurantPage = restaurantRepository.findAll(pageable);
+        List<RestaurantResponseDto> restaurantResponseDtos =
+                restaurantPage.getContent()
+                        .stream()
+                        .map(restaurant -> new RestaurantResponseDto(
+                                restaurant.getId(),
+                                restaurant.getName(),
+                                restaurant.getAddress()
+                        )).toList();
+
+        return new RestaurantPageResponseDto(
+                restaurantResponseDtos,
+                restaurantPage.getNumber(),
+                restaurantPage.getSize(),
+                restaurantPage.getTotalElements(),
+                restaurantPage.getTotalPages(),
+                restaurantPage.isLast()
+        );
     }
 
 
